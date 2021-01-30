@@ -7,6 +7,8 @@ namespace Player.Controls
     {
         [Inject]
         PlayerInputHandler playerInputHandler;
+        [Inject]
+        GameManager gameManager;
 
         [SerializeField]
         Rigidbody rigidbody;
@@ -21,15 +23,30 @@ namespace Player.Controls
         float rotationSpeed = 540;
 
         Quaternion nextRotation;
+        bool isDrilling;
 
         void OnEnable()
         {
             playerInputHandler.EnablePlayerInput();
+            playerInputHandler.OnDrillingStarted += DrillStarted;
+            playerInputHandler.OnDrillingStopped += DrillStopped;
         }
 
         void OnDisable()
         {
             playerInputHandler.DisablePlayerInput();
+            playerInputHandler.OnDrillingStarted -= DrillStarted;
+            playerInputHandler.OnDrillingStopped -= DrillStopped;
+        }
+
+        void DrillStarted()
+        {
+            gameManager.SetPlayerDrilling(true);
+        }
+
+        void DrillStopped()
+        {
+            gameManager.SetPlayerDrilling(false);
         }
 
         void Update()

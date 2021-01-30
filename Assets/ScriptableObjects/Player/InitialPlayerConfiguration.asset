@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: InitialPlayerConfiguration
   m_EditorClassIdentifier: 
   playerInitialEnergy: 1000
-  initialTickRate: 100
+  initialTickRate: 10

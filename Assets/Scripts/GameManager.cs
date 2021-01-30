@@ -1,7 +1,9 @@
 using System;
 using GamePlay;
 using Generator;
+using Player.Controls;
 using Player.Energy;
+using Resources;
 using UnityEngine;
 using Utils.DI;
 using Zenject;
@@ -11,6 +13,7 @@ public class GameManager
     [Inject] GameConfiguration gameConfiguration;
     [Inject] LevelGenerator levelGenerator;
     [Inject] EnergyHandler energyHandler;
+    [Inject] PlayerInputHandler playerInputHandler;
 
     [Inject(Id = Identifiers.PlayerTransform)]
     Transform playerTransform;
@@ -19,6 +22,9 @@ public class GameManager
     public event Action OnGameOver;
 
     bool gameStarted;
+
+    // This should be in PlayerState
+    public bool IsPlayerDrilling { get; private set; }
 
     public void StartGame()
     {
@@ -30,12 +36,22 @@ public class GameManager
         energyHandler.OnEnergyDepleeted += GameOver;
         gameStarted = true;
         
-        OnGameStart?.Invoke();
+        playerInputHandler.EnablePlayerInput();
     }
 
     void GameOver()
     {
         energyHandler.OnEnergyDepleeted -= GameOver;
-        OnGameOver?.Invoke();
+        playerInputHandler.DisablePlayerInput();
+    }
+
+    public void ResourceBoxCollected(ResourceBox resourceBox)
+    {
+        Debug.Log("Resource box collected");
+    }
+
+    public void SetPlayerDrilling(bool isPlayerDrilling)
+    {
+        IsPlayerDrilling = isPlayerDrilling;
     }
 }

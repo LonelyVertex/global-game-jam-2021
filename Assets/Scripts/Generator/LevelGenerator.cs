@@ -20,10 +20,8 @@ namespace Generator
         [Header("Tiles")] [SerializeField] List<TileDefinition> bases;
         [SerializeField] List<TileDefinition> tiles;
 
-        [Header("Objects")] [SerializeField] GameObject boxPrefab;
-        [SerializeField] GameObject minePrefab;
-
         [Inject] MineTrapGenerator mineTrapGenerator;
+        [Inject] ResourceBoxGenerator resourceBoxGenerator;
 
         int gridSize;
         int minTiles;
@@ -237,17 +235,8 @@ namespace Generator
 
         void PlaceAllObjects()
         {
-            PlaceObjects(boxPoints, boxPrefab, boxCount);
-//            PlaceObjects(minePoints, minePrefab, mineCount);
+            resourceBoxGenerator.SpawnBoxes(boxPoints.OrderBy(p => Random.value).Take(boxCount));
             mineTrapGenerator.SpawnMines(minePoints.OrderBy(p => Random.value).Take(mineCount));
-        }
-
-        void PlaceObjects(List<Transform> points, GameObject prefab, int count)
-        {
-            foreach (var t in points.OrderBy(p => Random.value).Take(count))
-            {
-                Instantiate(prefab, t);
-            }
         }
 
         // Utils

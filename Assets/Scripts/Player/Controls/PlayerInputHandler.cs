@@ -10,7 +10,6 @@ namespace Player.Controls
 
         public Vector3 MovementVector3 { get; private set; }
 
-
         public void EnablePlayerInput()
         {
             inputActions.Enable();

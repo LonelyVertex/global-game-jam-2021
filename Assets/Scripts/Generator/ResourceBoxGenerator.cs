@@ -2,19 +2,36 @@ using System;
 using System.Collections.Generic;
 using Resources;
 using UnityEngine;
-using Zenject;
 
 namespace Generator
 {
     public class ResourceBoxGenerator
     {
-        [Inject]
         ResourceBox.Factory resourceBoxFactory;
-
-        [Inject]
         GameManager gameManager;
-        public event Action<ResourceBox> OnBoxSpawned;
-        public event Action<ResourceBox> OnBoxDespawned;
+
+        public HashSet<ResourceBox> ResourceBoxes { get; private set; }
+        public event Action<ResourceBox> OnBoxCollected;
+
+        public ResourceBoxGenerator(ResourceBox.Factory resourceBoxFactory, GameManager gameManager)
+        {
+            this.resourceBoxFactory = resourceBoxFactory;
+            this.gameManager = gameManager;
+            ClearState();
+
+            this.gameManager.OnGameOver += ClearState;
+            this.gameManager.OnLevelComplete += ClearState;
+            this.gameManager.OnGameComplete += ClearState;
+        }
+
+        void ClearState()
+        {
+            if (ResourceBoxes == null) {
+                ResourceBoxes = new HashSet<ResourceBox>();
+            } else {
+                ResourceBoxes.Clear();
+            }
+        }
 
         public void SpawnBoxes(IEnumerable<Transform> parents)
         {
@@ -23,19 +40,20 @@ namespace Generator
             }
         }
 
-        void OnBoxDrilled(ResourceBox obj)
+        void OnBoxDrilled(ResourceBox box)
         {
-            obj.OnBoxDrilled -= OnBoxDrilled;
-            gameManager.ResourceBoxCollected(obj);
-            resourceBoxFactory.Despawn(obj);
-            OnBoxDespawned?.Invoke(obj);
+            box.OnBoxDrilled -= OnBoxDrilled;
+            gameManager.ResourceBoxCollected(box);
+            resourceBoxFactory.Despawn(box);
+            ResourceBoxes.Remove(box);
+            OnBoxCollected?.Invoke(box);
         }
 
         public void SpawnBox(Transform transform)
         {
             var box = resourceBoxFactory.Spawn(transform);
             box.OnBoxDrilled += OnBoxDrilled;
-            OnBoxSpawned?.Invoke(box);
+            ResourceBoxes.Add(box);
         }
     }
 }

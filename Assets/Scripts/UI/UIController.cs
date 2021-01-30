@@ -12,15 +12,21 @@ namespace UI
         
         public void StartGame()
         {
+            gameManager.OnGameStart += OnGameStart;
+            gameManager.OnGameOver += OnGameOver;
+            
             gameManager.StartGame();
+        }
+
+        void OnGameStart()
+        {
             preGameUI.SetActive(false);
             gameOverUI.SetActive(false);
-
-            gameManager.OnGameOver += OnGameOver;
         }
 
         void OnGameOver()
         {
+            gameManager.OnGameStart -= OnGameStart;
             gameManager.OnGameOver -= OnGameOver;
             gameOverUI.SetActive(true);
         }

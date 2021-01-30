@@ -27,7 +27,7 @@ namespace DI.Installers
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
-            Container.Bind<Transform>().WithId(Identifiers.PlayerTransform).FromComponentInNewPrefab(playerPrefab).AsSingle();
+            Container.Bind<CharacterController>().WithId(Identifiers.PlayerCharacterController).FromComponentInNewPrefab(playerPrefab).AsSingle();
             Container.Bind<MineTrapGenerator>().AsSingle();
             Container.BindMemoryPool<MineTrap, MineTrap.Factory>().WithInitialSize(4).FromComponentInNewPrefab(minePrefab);
             Container.Bind<LevelGenerator>().FromComponentInNewPrefab(generatorPrefab).AsSingle();

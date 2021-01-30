@@ -15,8 +15,8 @@ public class GameManager
     [Inject] EnergyHandler energyHandler;
     [Inject] PlayerInputHandler playerInputHandler;
 
-    [Inject(Id = Identifiers.PlayerTransform)]
-    Transform playerTransform;
+    [Inject(Id = Identifiers.PlayerCharacterController)]
+    CharacterController playerCharacterController;
 
     public event Action OnGameStart;
     public event Action OnGameOver;
@@ -29,14 +29,23 @@ public class GameManager
     public void StartGame()
     {
         if (gameConfiguration.Levels.Count == 0) return;
-        
+
         levelGenerator.Generate(gameConfiguration.Levels[0]);
-        playerTransform.position = levelGenerator.SpawnPoint;
+        
+        PlacePlayer();
         energyHandler.RefillEnergy();
         energyHandler.OnEnergyDepleeted += GameOver;
-        gameStarted = true;
         
         playerInputHandler.EnablePlayerInput();
+        gameStarted = true;
+        OnGameStart?.Invoke();
+    }
+
+    void PlacePlayer()
+    {
+        playerCharacterController.enabled = false;
+        playerCharacterController.transform.position = levelGenerator.SpawnPoint;
+        playerCharacterController.enabled = true;
     }
 
     void GameOver()

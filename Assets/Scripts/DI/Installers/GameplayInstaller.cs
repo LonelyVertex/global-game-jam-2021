@@ -16,7 +16,7 @@ namespace DI.Installers
         public override void InstallBindings()
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EnergyHandler>().FromInstance(new EnergyHandler(maxEnergy: playerInitialEnergy, energyTickRate: initialTickRate));
+            Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
         }
     }
 }

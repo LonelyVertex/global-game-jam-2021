@@ -27,6 +27,14 @@ namespace InputSystem
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Drill"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0225c0d-54fa-4eb4-bb9f-e98524423bc3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -139,6 +147,17 @@ namespace InputSystem
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04a67b51-bf57-4c2f-861b-128d5ad7ff03"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -148,6 +167,7 @@ namespace InputSystem
             // PlayerControls
             m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
             m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
+            m_PlayerControls_Drill = m_PlayerControls.FindAction("Drill", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -198,11 +218,13 @@ namespace InputSystem
         private readonly InputActionMap m_PlayerControls;
         private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
         private readonly InputAction m_PlayerControls_Movement;
+        private readonly InputAction m_PlayerControls_Drill;
         public struct PlayerControlsActions
         {
             private @InputActions m_Wrapper;
             public PlayerControlsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
+            public InputAction @Drill => m_Wrapper.m_PlayerControls_Drill;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -215,6 +237,9 @@ namespace InputSystem
                     @Movement.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
                     @Movement.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
                     @Movement.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
+                    @Drill.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
+                    @Drill.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
+                    @Drill.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
                 }
                 m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -222,6 +247,9 @@ namespace InputSystem
                     @Movement.started += instance.OnMovement;
                     @Movement.performed += instance.OnMovement;
                     @Movement.canceled += instance.OnMovement;
+                    @Drill.started += instance.OnDrill;
+                    @Drill.performed += instance.OnDrill;
+                    @Drill.canceled += instance.OnDrill;
                 }
             }
         }
@@ -229,6 +257,7 @@ namespace InputSystem
         public interface IPlayerControlsActions
         {
             void OnMovement(InputAction.CallbackContext context);
+            void OnDrill(InputAction.CallbackContext context);
         }
     }
 }

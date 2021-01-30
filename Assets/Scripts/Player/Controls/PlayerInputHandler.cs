@@ -1,8 +1,7 @@
+using System;
 using InputSystem;
-using Player.Energy;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
 
 namespace Player.Controls
 {
@@ -11,28 +10,49 @@ namespace Player.Controls
         readonly InputActions inputActions = new InputActions();
 
         public Vector3 MovementVector3 { get; private set; }
+        public event Action OnDrillingStarted;
+        public event Action OnDrillingStopped;
 
-        public PlayerInputHandler(GameManager gameManager)
-        {
-            gameManager.OnGameStart += EnablePlayerInput;
-            gameManager.OnGameOver += DisablePlayerInput;
-            
-            DisablePlayerInput();
-        }
-        
         public void EnablePlayerInput()
         {
             inputActions.Enable();
+            EnableMovement();
+            inputActions.PlayerControls.Drill.performed += DrillPerformed;
+            inputActions.PlayerControls.Drill.canceled += DrillCanceled;
+        }
+
+        void EnableMovement()
+        {
             inputActions.PlayerControls.Movement.performed += MovementPerformed;
             inputActions.PlayerControls.Movement.canceled += MovementCanceled;
         }
 
-        public void DisablePlayerInput()
+        void DisableMovement()
         {
             inputActions.PlayerControls.Movement.performed -= MovementPerformed;
             inputActions.PlayerControls.Movement.canceled -= MovementCanceled;
+        }
+
+        public void DisablePlayerInput()
+        {
+            DisableMovement();
+            inputActions.PlayerControls.Drill.performed -= DrillPerformed;
+            inputActions.PlayerControls.Drill.canceled -= DrillCanceled;
             Reset();
             inputActions.Disable();
+        }
+
+        void DrillPerformed(InputAction.CallbackContext obj)
+        {
+            Reset();
+            DisableMovement();
+            OnDrillingStarted?.Invoke();
+        }
+
+        void DrillCanceled(InputAction.CallbackContext obj)
+        {
+            EnableMovement();
+            OnDrillingStopped?.Invoke();
         }
 
         void MovementCanceled(InputAction.CallbackContext obj)

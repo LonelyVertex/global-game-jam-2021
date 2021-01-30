@@ -7,7 +7,7 @@ namespace Traps
 {
     public class MineTrap : AbstractTrap
     {
-
+        // TODO: MOVE TO GAME SETTINGS / FLOOR DIFICULTY SETTINGS ???
         const float percentageEnergyDrain = 0.1f;
 
         [Inject]

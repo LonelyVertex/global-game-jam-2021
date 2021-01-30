@@ -9,6 +9,7 @@ namespace Player.Energy
     {
         int currentEnergy;
 
+        // TODO: MOVE TO GAME SETTINGS
         const float ENERGY_TICKS_PER_SECOND = 1.0f;
         float previousTickTime = 0.0f;
         ILogger logger;

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8454539267587648849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8454539267587648851}
+  - component: {fileID: 8454539267587648848}
+  m_Layer: 0
+  m_Name: Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8454539267587648851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8454539267587648849}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -36.10843, y: -22.98285, z: 6.722738}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8454539267587648848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8454539267587648849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f5619658244ce3af07c7d0f18da9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sGridSize: 19
+  sMinTiles: 20
+  sMaxTiles: 30
+  sBoxCount: 10
+  sMineCount: 20
+  bases:
+  - {fileID: 11400000, guid: 526cdf781399e43488ee546179b8f847, type: 2}
+  - {fileID: 11400000, guid: 2cd1bced54a694a118a76deef7071317, type: 2}
+  - {fileID: 11400000, guid: 0f81a87029fec4283a1a099f9bef2b2a, type: 2}
+  - {fileID: 11400000, guid: 50f80b3307542472da908ccc5167b55c, type: 2}
+  tiles:
+  - {fileID: 11400000, guid: f1b32e09812e744be94c7e5d77c267e5, type: 2}
+  - {fileID: 11400000, guid: 06ab4566587ec4a53b24d4011dbe4a78, type: 2}
+  - {fileID: 11400000, guid: 8d2e6e1619cff4cf5b00b0ddcbbc30a1, type: 2}
+  - {fileID: 11400000, guid: 5c4c54662804241fbbb56fd90e2a2609, type: 2}
+  - {fileID: 11400000, guid: 7d94eeefdd6f247dd98007e2f01c6411, type: 2}
+  - {fileID: 11400000, guid: 395252bff046f4dcba96bc10fff9fe74, type: 2}
+  - {fileID: 11400000, guid: 4539110e6ecd6477f8f0e19777ba679a, type: 2}
+  - {fileID: 11400000, guid: ca37730922bb340f79326de8ff7a8042, type: 2}
+  - {fileID: 11400000, guid: 8e52ef588dcfe43bdba5187a5083744b, type: 2}
+  - {fileID: 11400000, guid: b51d6ee676afb4816b8db435fd5a4b61, type: 2}
+  - {fileID: 11400000, guid: c59ba41d0e47d44ee9f50a75eb7c58e9, type: 2}
+  - {fileID: 11400000, guid: 47c6b4da9999044378c5114afa7c3e99, type: 2}
+  - {fileID: 11400000, guid: a8f194a5db5974405b7320091bef0b92, type: 2}
+  - {fileID: 11400000, guid: d2811e03bc94649f4b466fe09cd90a11, type: 2}
+  - {fileID: 11400000, guid: 34c97628ebadc4b1892fd0a4cdb2e737, type: 2}
+  - {fileID: 11400000, guid: 66f18d74927294d5a8f46f922c2370f7, type: 2}
+  boxPrefab: {fileID: 7738677786128285985, guid: fb2a43d1e140b40e7a58fa2dd1006bf4, type: 3}
+  minePrefab: {fileID: 4916433221988500082, guid: 34e2e9ce2ba504e73a94ed518639ff20, type: 3}

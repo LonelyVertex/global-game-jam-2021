@@ -3,11 +3,12 @@ using System.Linq;
 using ModestTree;
 using Tiles;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Generator
 {
-    public class Generator : MonoBehaviour
+    public class LevelGenerator : MonoBehaviour
     {
         const int N = 8;
         const int E = 4;
@@ -15,17 +16,13 @@ namespace Generator
         const int W = 1;
         const float TileSize = 32f;
 
-        [Header("Settings")] [SerializeField] int sGridSize;
-        [SerializeField] int sMinTiles;
-        [SerializeField] int sMaxTiles;
-        [SerializeField] int sBoxCount;
-        [SerializeField] int sMineCount;
-
         [Header("Tiles")] [SerializeField] List<TileDefinition> bases;
         [SerializeField] List<TileDefinition> tiles;
 
         [Header("Objects")] [SerializeField] GameObject boxPrefab;
         [SerializeField] GameObject minePrefab;
+
+        [Inject] MineTrapGenerator mineTrapGenerator;
 
         int gridSize;
         int minTiles;
@@ -37,20 +34,20 @@ namespace Generator
         Queue<(int, int)> queue;
         List<Transform> boxPoints;
         List<Transform> minePoints;
+        List<GameObject> spawnedObjects;
+        
+        int Middle => Mathf.FloorToInt(gridSize / 2.0f);
 
-        void Start()
-        {
-            Generate(sGridSize, sMinTiles, sMaxTiles, sBoxCount, sMineCount);
-        }
+        public Vector3 SpawnPoint => new Vector3(Middle * TileSize, 1, -Middle * TileSize);
 
-        void Generate(int newGridSize, int newMinTiles, int newMaxTiles, int newBoxCount, int newMineCount)
+        public void Generate(int newGridSize, int newMinTiles, int newMaxTiles, int newBoxCount, int newMineCount)
         {
             Init(newGridSize, newMinTiles, newMaxTiles, newBoxCount, newMineCount);
 
             PlaceBase();
             PlaceTiles();
             FillBlankTiles();
-            
+
             PlaceAllObjects();
         }
 
@@ -58,6 +55,14 @@ namespace Generator
 
         void Init(int newGridSize, int newMinTiles, int newMaxTiles, int newBoxCount, int newMineCount)
         {
+            if (spawnedObjects != null && spawnedObjects.Count > 0)
+            {
+                foreach (var spawnedObject in spawnedObjects)
+                {
+                    Destroy(spawnedObject);
+                }
+            }
+            
             gridSize = newGridSize;
             minTiles = newMinTiles;
             maxTiles = newMaxTiles;
@@ -69,6 +74,7 @@ namespace Generator
             queue = new Queue<(int, int)>();
             boxPoints = new List<Transform>();
             minePoints = new List<Transform>();
+            spawnedObjects = new List<GameObject>();
         }
 
         void InitGrid()
@@ -82,16 +88,14 @@ namespace Generator
                 }
             }
         }
-        
+
         // Tiles placement
 
         void PlaceBase()
         {
-            var middle = Mathf.CeilToInt(gridSize / 2.0f);
             var baseTile = PickRandomTile(bases);
-
-            InstantiateTile(baseTile, middle, middle);
-            QueueNextTiles(baseTile, middle, middle);
+            InstantiateTile(baseTile, Middle, Middle);
+            QueueNextTiles(baseTile, Middle, Middle);
         }
 
         void PlaceTiles()
@@ -203,8 +207,10 @@ namespace Generator
             grid[top, left] = (int) tileDefinition.TileType;
             tilesPlaced++;
 
-            var obj = Instantiate(tileDefinition.Prefab, new Vector3(left * TileSize, 0, -top * TileSize), tileDefinition.Rotation);
+            var obj = Instantiate(tileDefinition.Prefab, new Vector3(left * TileSize, 0, -top * TileSize),
+                tileDefinition.Rotation);
             obj.transform.localScale = tileDefinition.Scale;
+            spawnedObjects.Add(obj.gameObject);
 
             var prefab = obj.GetComponent<TilePrefab>();
             if (prefab.BoxPoints != null)
@@ -225,13 +231,14 @@ namespace Generator
             if (IsNotMaxEdge(left) && tileDefinition.Match(E)) queue.Enqueue((top, left + 1));
             if (IsNotMinEdge(left) && tileDefinition.Match(W)) queue.Enqueue((top, left - 1));
         }
-        
+
         // Object placement
 
         void PlaceAllObjects()
         {
             PlaceObjects(boxPoints, boxPrefab, boxCount);
-            PlaceObjects(minePoints, minePrefab, mineCount);
+//            PlaceObjects(minePoints, minePrefab, mineCount);
+            mineTrapGenerator.SpawnMines(minePoints.OrderBy(p => Random.value).Take(mineCount));
         }
 
         void PlaceObjects(List<Transform> points, GameObject prefab, int count)

@@ -13,13 +13,24 @@ namespace DI.Installers
         [SerializeField]
         GameObject playerPrefab;
 
+        [SerializeField]
+        GameObject generatorPrefab;
+
+        [SerializeField] 
+        GameObject gameManager;
+
+        [SerializeField]
+        GameObject minePrefab;
+
         public override void InstallBindings()
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
             Container.Bind<Transform>().WithId(Identifiers.PlayerTransform).FromComponentInNewPrefab(playerPrefab).AsSingle();
             Container.Bind<MineTrapGenerator>().AsSingle();
-            Container.BindMemoryPool<MineTrap, MineTrap.Factory>().AsSingle();
+            Container.BindMemoryPool<MineTrap, MineTrap.Factory>().WithInitialSize(4).FromComponentInNewPrefab(minePrefab).AsSingle();
+            Container.Bind<LevelGenerator>().FromComponentInNewPrefab(generatorPrefab).AsSingle();
+            Container.Bind<GameManager>().FromComponentOn(gameManager).AsSingle();
         }
     }
 }

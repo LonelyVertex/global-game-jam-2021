@@ -7,7 +7,8 @@ namespace UI
     {
         [SerializeField] GameObject preGameUI;
         [SerializeField] GameObject gameOverUI;
-        
+        [SerializeField] GameObject gameplayUI;
+
         [Inject] GameManager gameManager;
         
         public void StartGame()
@@ -22,6 +23,7 @@ namespace UI
         {
             preGameUI.SetActive(false);
             gameOverUI.SetActive(false);
+            gameplayUI.SetActive(true);
         }
 
         void OnGameOver()
@@ -29,6 +31,7 @@ namespace UI
             gameManager.OnGameStart -= OnGameStart;
             gameManager.OnGameOver -= OnGameOver;
             gameOverUI.SetActive(true);
+            gameplayUI.SetActive(false);
         }
     }
 }

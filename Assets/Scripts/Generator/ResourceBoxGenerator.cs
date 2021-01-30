@@ -28,14 +28,14 @@ namespace Generator
             obj.OnBoxDrilled -= OnBoxDrilled;
             gameManager.ResourceBoxCollected(obj);
             resourceBoxFactory.Despawn(obj);
-            OnBoxDespawned(obj);
+            OnBoxDespawned?.Invoke(obj);
         }
 
         public void SpawnBox(Transform transform)
         {
             var box = resourceBoxFactory.Spawn(transform);
             box.OnBoxDrilled += OnBoxDrilled;
-            OnBoxSpawned(box);
+            OnBoxSpawned?.Invoke(box);
         }
     }
 }

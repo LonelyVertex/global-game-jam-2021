@@ -25,13 +25,11 @@ public class GameManager
 
     bool gameStarted;
 
-    // This should be in PlayerState
-    public bool IsPlayerDrilling { get; private set; }
     public int BoxesCollected { get; private set; }
     public int CurrentLevelBoxes { get; private set; }
 
     int currentLevel = 0;
-
+    
     public void StartGame()
     {
         if (currentLevel >= gameConfiguration.Levels.Count)
@@ -85,10 +83,5 @@ public class GameManager
     {
         BoxesCollected++;
         OnBoxCollected?.Invoke();
-    }
-
-    public void SetPlayerDrilling(bool isPlayerDrilling)
-    {
-        IsPlayerDrilling = isPlayerDrilling;
     }
 }

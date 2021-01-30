@@ -10,6 +10,7 @@ namespace Player.Controls
         readonly InputActions inputActions = new InputActions();
 
         public Vector3 MovementVector3 { get; private set; }
+        public bool IsMoving => !Mathf.Approximately(MovementVector3.magnitude, 0.0f);
         public event Action OnDrillingStarted;
         public event Action OnDrillingStopped;
 

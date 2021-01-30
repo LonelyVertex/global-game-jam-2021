@@ -35,6 +35,14 @@ namespace InputSystem
                     ""expectedControlType"": ""Button"",
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""3484e320-50b5-4c05-9750-23bddd4caf44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -158,6 +166,17 @@ namespace InputSystem
                     ""action"": ""Drill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7c5df81-3d1f-46ea-a352-cfabf1f119a0"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -168,6 +187,7 @@ namespace InputSystem
             m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
             m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
             m_PlayerControls_Drill = m_PlayerControls.FindAction("Drill", throwIfNotFound: true);
+            m_PlayerControls_Dash = m_PlayerControls.FindAction("Dash", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -219,12 +239,14 @@ namespace InputSystem
         private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
         private readonly InputAction m_PlayerControls_Movement;
         private readonly InputAction m_PlayerControls_Drill;
+        private readonly InputAction m_PlayerControls_Dash;
         public struct PlayerControlsActions
         {
             private @InputActions m_Wrapper;
             public PlayerControlsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
             public InputAction @Drill => m_Wrapper.m_PlayerControls_Drill;
+            public InputAction @Dash => m_Wrapper.m_PlayerControls_Dash;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -240,6 +262,9 @@ namespace InputSystem
                     @Drill.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
                     @Drill.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
                     @Drill.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDrill;
+                    @Dash.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
+                    @Dash.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
+                    @Dash.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
                 }
                 m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -250,6 +275,9 @@ namespace InputSystem
                     @Drill.started += instance.OnDrill;
                     @Drill.performed += instance.OnDrill;
                     @Drill.canceled += instance.OnDrill;
+                    @Dash.started += instance.OnDash;
+                    @Dash.performed += instance.OnDash;
+                    @Dash.canceled += instance.OnDash;
                 }
             }
         }
@@ -258,6 +286,7 @@ namespace InputSystem
         {
             void OnMovement(InputAction.CallbackContext context);
             void OnDrill(InputAction.CallbackContext context);
+            void OnDash(InputAction.CallbackContext context);
         }
     }
 }

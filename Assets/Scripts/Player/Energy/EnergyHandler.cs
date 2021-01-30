@@ -11,6 +11,9 @@ namespace Player.Energy
 
         // TODO: MOVE TO GAME SETTINGS
         const float ENERGY_TICKS_PER_SECOND = 1.0f;
+        // TODO: MOVE TO GAME SETTINGS
+        const int DASH_ENERGY = 50;
+
         float previousTickTime = 0.0f;
         ILogger logger;
 
@@ -70,6 +73,11 @@ namespace Player.Energy
         public void DrainPercentage(float percentageEnergyDrain)
         {
             CurrentEnergy -= Mathf.CeilToInt(MaxEnergy * percentageEnergyDrain);
+        }
+
+        public void DrainDashEnergy()
+        {
+            CurrentEnergy -= DASH_ENERGY;
         }
     }
 }

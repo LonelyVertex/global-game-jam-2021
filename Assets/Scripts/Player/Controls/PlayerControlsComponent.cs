@@ -1,4 +1,5 @@
 using Player.State;
+using Player.Energy;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,9 @@ namespace Player.Controls
         PlayerInputHandler playerInputHandler;
 
         [Inject]
+        EnergyHandler energyHandler;
+        
+        [Inject]
         PlayerStateComponent playerState;
 
         [SerializeField]
@@ -19,18 +23,20 @@ namespace Player.Controls
         float movementSpeedConstant = 30;
 
         [SerializeField]
-        float maxSpeed = 3;
+        float dashSpeed = 60;
 
         [SerializeField]
         float rotationSpeed = 540;
 
         Quaternion nextRotation;
+        bool isDashing = false;
 
         void OnEnable()
         {
             playerInputHandler.EnablePlayerInput();
             playerInputHandler.OnDrillingStarted += DrillStarted;
             playerInputHandler.OnDrillingStopped += DrillStopped;
+            playerInputHandler.OnDashPerformed += DashPerformed;
         }
 
         void OnDisable()
@@ -38,6 +44,7 @@ namespace Player.Controls
             playerInputHandler.DisablePlayerInput();
             playerInputHandler.OnDrillingStarted -= DrillStarted;
             playerInputHandler.OnDrillingStopped -= DrillStopped;
+            playerInputHandler.OnDashPerformed -= DashPerformed;
         }
 
         void DrillStarted()
@@ -50,6 +57,13 @@ namespace Player.Controls
             playerState.IsDrilling = false;
         }
 
+        void DashPerformed()
+        {
+            isDashing = true;
+            energyHandler.DrainDashEnergy();
+            Invoke(nameof(CancelDash), 0.1f);
+        }
+
         void Update()
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, nextRotation, rotationSpeed * Time.deltaTime);
@@ -57,11 +71,20 @@ namespace Player.Controls
 
         void FixedUpdate()
         {
-            characterController.SimpleMove(movementSpeedConstant * playerInputHandler.MovementVector3);
+            var (speed, vector) = isDashing
+                ? (dashSpeed, transform.forward.normalized)
+                : (movementSpeedConstant, playerInputHandler.MovementVector3);
+
+            characterController.SimpleMove(speed * vector);
 
             if (playerInputHandler.IsMoving) {
                 nextRotation = Quaternion.LookRotation(playerInputHandler.MovementVector3, Vector3.up);
             }
+        }
+
+        void CancelDash()
+        {
+            isDashing = false;
         }
     }
 }

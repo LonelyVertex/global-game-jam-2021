@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: tile-base-w
   m_EditorClassIdentifier: 
   tileType: 1
-  prefab: {fileID: 2742401229826993200, guid: 3e1650aae01b24e6999bd4da44180128, type: 3}
+  prefab: {fileID: 9204395149631407749, guid: 3e1650aae01b24e6999bd4da44180128, type: 3}
   rotation: {x: 0, y: 180, z: 0}
   scale: {x: 1, y: 1, z: 1}

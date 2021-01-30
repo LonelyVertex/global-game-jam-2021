@@ -5,21 +5,21 @@ using Player.Controls;
 using Player.Energy;
 using Resources;
 using UnityEngine;
-using Utils.DI;
 using Zenject;
 
-public class GameManager
+public class GameManager : ITickable
 {
     [Inject] GameConfiguration gameConfiguration;
     [Inject] LevelGenerator levelGenerator;
     [Inject] EnergyHandler energyHandler;
     [Inject] PlayerInputHandler playerInputHandler;
 
-    [Inject(Id = Identifiers.PlayerCharacterController)]
+    [Inject]
     CharacterController playerCharacterController;
 
     public event Action OnGameStart;
     public event Action OnGameOver;
+    public event Action OnLevelComplete;
     public event Action OnGameComplete;
     public event Action OnBoxCollected;
 
@@ -29,6 +29,9 @@ public class GameManager
     public int CurrentLevelBoxes { get; private set; }
 
     int currentLevel = 0;
+
+    bool shouldStartNextLevel = false;
+    float timeToNextLevel = 0;
     
     public void StartGame()
     {
@@ -68,9 +71,16 @@ public class GameManager
     public void LevelComplete()
     {
         currentLevel++;
-        playerInputHandler.DisablePlayerInput();
+        OnLevelComplete?.Invoke();
         
-        // TODO transition
+        shouldStartNextLevel = true;
+        timeToNextLevel = 2;
+    }
+
+    void GenerateNextLevel()
+    {
+        shouldStartNextLevel = false;
+        playerInputHandler.DisablePlayerInput();
         StartGame();
     }
 
@@ -83,5 +93,17 @@ public class GameManager
     {
         BoxesCollected++;
         OnBoxCollected?.Invoke();
+    }
+
+    public void Tick()
+    {
+        if (shouldStartNextLevel)
+        {
+            timeToNextLevel -= Time.deltaTime;
+            if (timeToNextLevel <= 0)
+            {
+                GenerateNextLevel();
+            }
+        }
     }
 }

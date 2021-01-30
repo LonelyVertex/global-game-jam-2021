@@ -28,12 +28,12 @@ namespace DI.Installers
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
-            Container.Bind<PlayerStateComponent>().FromComponentInHierarchy().AsSingle(); // TODO: @Trilka je tohle dobře??? potřebuju komponentu co se instancuje pomocí DI containeru z Prefabu... :/
-            Container.Bind<CharacterController>().WithId(Identifiers.PlayerCharacterController).FromComponentInNewPrefab(playerPrefab).AsSingle();
+            Container.Bind(typeof(CharacterController), typeof(PlayerStateComponent))
+                .FromComponentInNewPrefab(playerPrefab).AsSingle();
             Container.Bind<MineTrapGenerator>().AsSingle();
             Container.BindMemoryPool<MineTrap, MineTrap.Factory>().WithInitialSize(4).FromComponentInNewPrefab(minePrefab);
             Container.Bind<LevelGenerator>().FromComponentInNewPrefab(generatorPrefab).AsSingle();
-            Container.Bind<GameManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
             Container.Bind<ResourceBoxGenerator>().AsSingle();
             Container.BindMemoryPool<ResourceBox, ResourceBox.Factory>().WithInitialSize(4)
                 .FromComponentInNewPrefab(resourceBoxPrefab);

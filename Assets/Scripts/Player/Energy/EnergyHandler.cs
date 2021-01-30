@@ -1,3 +1,4 @@
+using Player.ScriptableObjects;
 using UnityEngine;
 using Zenject;
 
@@ -7,23 +8,25 @@ namespace Player.Energy
     {
         const float ENERGY_TICKS_PER_SECOND = 1.0f;
         float previousTickTime = 0.0f;
+        ILogger logger;
 
         public bool IsEnergyTickingEnabled { get; private set; }
         public int CurrentEnergy { get; private set; }
         public int EnergyTickRate { get; set; }
         public int MaxEnergy { get; set; }
 
-        public EnergyHandler(int maxEnergy = 1000, int energyTickRate = 10)
+        public EnergyHandler(PlayerInitialConfiguration configuration, ILogger logger)
         {
-            EnergyTickRate = energyTickRate;
-            MaxEnergy = maxEnergy;
+            this.logger = logger;
+            EnergyTickRate = configuration.InitialTickRate;
+            MaxEnergy = configuration.PlayerInitialEnergy;
             RefillEnergy();
         }
 
         public void TickEnergy()
         {
             CurrentEnergy -= EnergyTickRate;
-            Debug.Log($"CurrentEnergy: {CurrentEnergy}");
+            logger.Log($"CurrentEnergy: {CurrentEnergy}");
         }
 
         public void RefillEnergy()

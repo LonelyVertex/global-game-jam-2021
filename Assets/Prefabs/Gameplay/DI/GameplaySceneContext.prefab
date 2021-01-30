@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: 2d6e7fee95d2f40d3a872fbef1c8f24a, type: 2}
   _monoInstallers:
   - {fileID: 1618940017760964717}
   _installerPrefabs: []
@@ -76,3 +77,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4817e9091e77647b48856ab3c9e0eeae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInitialEnergy: 1000
+  initialTickRate: 10

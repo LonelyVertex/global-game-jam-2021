@@ -13,6 +13,7 @@ namespace Player.Controls
         public bool IsMoving => !Mathf.Approximately(MovementVector3.magnitude, 0.0f);
         public event Action OnDrillingStarted;
         public event Action OnDrillingStopped;
+        public event Action OnDashPerformed;
 
         public void EnablePlayerInput()
         {
@@ -26,12 +27,14 @@ namespace Player.Controls
         {
             inputActions.PlayerControls.Movement.performed += MovementPerformed;
             inputActions.PlayerControls.Movement.canceled += MovementCanceled;
+            inputActions.PlayerControls.Dash.performed += DashPerformed;
         }
 
         void DisableMovement()
         {
             inputActions.PlayerControls.Movement.performed -= MovementPerformed;
             inputActions.PlayerControls.Movement.canceled -= MovementCanceled;
+            inputActions.PlayerControls.Dash.performed -= DashPerformed;
         }
 
         public void DisablePlayerInput()
@@ -54,6 +57,11 @@ namespace Player.Controls
         {
             EnableMovement();
             OnDrillingStopped?.Invoke();
+        }
+
+        void DashPerformed(InputAction.CallbackContext obj)
+        {
+            OnDashPerformed?.Invoke();
         }
 
         void MovementCanceled(InputAction.CallbackContext obj)

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameplayScriptableObjectInstaller
   m_EditorClassIdentifier: 
   playerInitialConfiguration: {fileID: 11400000, guid: 49955371cb89c47fda87b287043ba71d, type: 2}
+  gameConfiguration: {fileID: 11400000, guid: 4a1a93d71fb5a4aaa868487644c4ba2e, type: 2}

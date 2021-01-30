@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GamePlay;
 using ModestTree;
 using Tiles;
 using UnityEngine;
@@ -40,9 +41,9 @@ namespace Generator
 
         public Vector3 SpawnPoint => new Vector3(Middle * TileSize, 1, -Middle * TileSize);
 
-        public void Generate(int newGridSize, int newMinTiles, int newMaxTiles, int newBoxCount, int newMineCount)
+        public void Generate(GameConfiguration.LevelConfiguration levelConfiguration)
         {
-            Init(newGridSize, newMinTiles, newMaxTiles, newBoxCount, newMineCount);
+            Init(levelConfiguration);
 
             PlaceBase();
             PlaceTiles();
@@ -53,7 +54,7 @@ namespace Generator
 
         // Initialization
 
-        void Init(int newGridSize, int newMinTiles, int newMaxTiles, int newBoxCount, int newMineCount)
+        void Init(GameConfiguration.LevelConfiguration levelConfiguration)
         {
             if (spawnedObjects != null && spawnedObjects.Count > 0)
             {
@@ -63,11 +64,11 @@ namespace Generator
                 }
             }
             
-            gridSize = newGridSize;
-            minTiles = newMinTiles;
-            maxTiles = newMaxTiles;
-            boxCount = newBoxCount;
-            mineCount = newMineCount;
+            gridSize = levelConfiguration.GridSize;
+            minTiles = levelConfiguration.MinTiles;
+            maxTiles = levelConfiguration.MaxTiles;
+            boxCount = levelConfiguration.BoxCount;
+            mineCount = levelConfiguration.MineCount;
 
             InitGrid();
             tilesPlaced = 0;

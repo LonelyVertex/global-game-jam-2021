@@ -16,9 +16,6 @@ namespace DI.Installers
         [SerializeField]
         GameObject generatorPrefab;
 
-        [SerializeField] 
-        GameObject gameManager;
-
         [SerializeField]
         GameObject minePrefab;
 
@@ -30,7 +27,7 @@ namespace DI.Installers
             Container.Bind<MineTrapGenerator>().AsSingle();
             Container.BindMemoryPool<MineTrap, MineTrap.Factory>().WithInitialSize(4).FromComponentInNewPrefab(minePrefab).AsSingle();
             Container.Bind<LevelGenerator>().FromComponentInNewPrefab(generatorPrefab).AsSingle();
-            Container.Bind<GameManager>().FromComponentOn(gameManager).AsSingle();
+            Container.Bind<GameManager>().AsSingle();
         }
     }
 }

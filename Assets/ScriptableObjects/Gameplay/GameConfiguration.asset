@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd140b27a20247b29adb8218ce30954, type: 3}
-  m_Name: InitialPlayerConfiguration
+  m_Script: {fileID: 11500000, guid: 1cec32c68cb4542a684fadedd3c4e997, type: 3}
+  m_Name: GameConfiguration
   m_EditorClassIdentifier: 
-  playerInitialEnergy: 1000
-  initialTickRate: 100
+  levels:
+  - gridSize: 11
+    minTiles: 8
+    maxTiles: 12
+    boxCount: 10
+    mineCount: 20

@@ -1,6 +1,8 @@
 using InputSystem;
+using Player.Energy;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace Player.Controls
 {
@@ -10,6 +12,14 @@ namespace Player.Controls
 
         public Vector3 MovementVector3 { get; private set; }
 
+        public PlayerInputHandler(GameManager gameManager)
+        {
+            gameManager.OnGameStart += EnablePlayerInput;
+            gameManager.OnGameOver += DisablePlayerInput;
+            
+            DisablePlayerInput();
+        }
+        
         public void EnablePlayerInput()
         {
             inputActions.Enable();

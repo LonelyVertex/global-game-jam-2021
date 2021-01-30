@@ -1,40 +1,41 @@
 using System;
+using GamePlay;
 using Generator;
 using Player.Energy;
 using UnityEngine;
 using Utils.DI;
 using Zenject;
 
-public class GameManager : MonoBehaviour
+public class GameManager
 {
-    [Header("Settings")] 
-    [SerializeField] int gridSize;
-    [SerializeField] int minTiles;
-    [SerializeField] int maxTiles;
-    [SerializeField] int boxCount;
-    [SerializeField] int mineCount;
-
+    [Inject] GameConfiguration gameConfiguration;
     [Inject] LevelGenerator levelGenerator;
     [Inject] EnergyHandler energyHandler;
-    [Inject(Id=Identifiers.PlayerTransform)] Transform playerTransform;
 
+    [Inject(Id = Identifiers.PlayerTransform)]
+    Transform playerTransform;
+
+    public event Action OnGameStart;
     public event Action OnGameOver;
 
-    bool gameStarted = false;
-    
+    bool gameStarted;
+
     public void StartGame()
     {
-        levelGenerator.Generate(gridSize, minTiles, maxTiles, boxCount, mineCount);
+        if (gameConfiguration.Levels.Count == 0) return;
+        
+        levelGenerator.Generate(gameConfiguration.Levels[0]);
         playerTransform.position = levelGenerator.SpawnPoint;
         energyHandler.RefillEnergy();
+        energyHandler.OnEnergyDepleeted += GameOver;
         gameStarted = true;
+        
+        OnGameStart?.Invoke();
     }
 
-    void Update()
+    void GameOver()
     {
-        if (gameStarted && energyHandler.CurrentEnergy <= 0)
-        {
-            OnGameOver?.Invoke();
-        }
+        energyHandler.OnEnergyDepleeted -= GameOver;
+        OnGameOver?.Invoke();
     }
 }

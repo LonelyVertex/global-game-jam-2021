@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Resources;
 using UnityEngine;
@@ -12,6 +13,8 @@ namespace Generator
 
         [Inject]
         GameManager gameManager;
+        public event Action<ResourceBox> OnBoxSpawned;
+        public event Action<ResourceBox> OnBoxDespawned;
 
         public void SpawnBoxes(IEnumerable<Transform> parents)
         {
@@ -25,11 +28,14 @@ namespace Generator
             obj.OnBoxDrilled -= OnBoxDrilled;
             gameManager.ResourceBoxCollected(obj);
             resourceBoxFactory.Despawn(obj);
+            OnBoxDespawned(obj);
         }
 
         public void SpawnBox(Transform transform)
         {
-            resourceBoxFactory.Spawn(transform).OnBoxDrilled += OnBoxDrilled;
+            var box = resourceBoxFactory.Spawn(transform);
+            box.OnBoxDrilled += OnBoxDrilled;
+            OnBoxSpawned(box);
         }
     }
 }

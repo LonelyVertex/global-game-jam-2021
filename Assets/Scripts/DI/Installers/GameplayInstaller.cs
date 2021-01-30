@@ -1,6 +1,7 @@
 using Generator;
 using Player.Controls;
 using Player.Energy;
+using Player.State;
 using Resources;
 using Traps;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace DI.Installers
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
+            Container.Bind<PlayerStateComponent>().FromComponentInHierarchy().AsSingle(); // TODO: @Trilka je tohle dobře??? potřebuju komponentu co se instancuje pomocí DI containeru z Prefabu... :/
             Container.Bind<CharacterController>().WithId(Identifiers.PlayerCharacterController).FromComponentInNewPrefab(playerPrefab).AsSingle();
             Container.Bind<MineTrapGenerator>().AsSingle();
             Container.BindMemoryPool<MineTrap, MineTrap.Factory>().WithInitialSize(4).FromComponentInNewPrefab(minePrefab);

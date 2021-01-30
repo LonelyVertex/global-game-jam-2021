@@ -57,5 +57,11 @@ namespace Resources
                 item.Initialize(parent);
             }
         }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(transform.position, transform.localScale);
+        }
     }
 }

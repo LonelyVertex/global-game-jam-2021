@@ -1,3 +1,4 @@
+using Player.State;
 using UnityEngine;
 using Zenject;
 
@@ -7,9 +8,9 @@ namespace Player.Controls
     {
         [Inject]
         PlayerInputHandler playerInputHandler;
-        
+
         [Inject]
-        GameManager gameManager;
+        PlayerStateComponent playerState;
 
         [SerializeField]
         CharacterController characterController;
@@ -24,7 +25,6 @@ namespace Player.Controls
         float rotationSpeed = 540;
 
         Quaternion nextRotation;
-        bool isDrilling;
 
         void OnEnable()
         {
@@ -42,12 +42,12 @@ namespace Player.Controls
 
         void DrillStarted()
         {
-            gameManager.SetPlayerDrilling(true);
+            playerState.IsDrilling = true;
         }
 
         void DrillStopped()
         {
-            gameManager.SetPlayerDrilling(false);
+            playerState.IsDrilling = false;
         }
 
         void Update()
@@ -59,7 +59,7 @@ namespace Player.Controls
         {
             characterController.SimpleMove(movementSpeedConstant * playerInputHandler.MovementVector3);
 
-            if (!Mathf.Approximately(playerInputHandler.MovementVector3.magnitude, 0)) {
+            if (playerInputHandler.IsMoving) {
                 nextRotation = Quaternion.LookRotation(playerInputHandler.MovementVector3, Vector3.up);
             }
         }

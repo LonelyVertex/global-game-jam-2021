@@ -1,4 +1,5 @@
 using System;
+using Player.State;
 using UnityEngine;
 using Utils;
 using Zenject;
@@ -9,6 +10,9 @@ namespace Resources
     {
         [Inject]
         GameManager gameManager;
+
+        [Inject] 
+        PlayerStateComponent playerState;
 
         bool isPlayerInRange = false;
 
@@ -41,7 +45,7 @@ namespace Resources
 
         void Update()
         {
-            if (gameManager.IsPlayerDrilling && isPlayerInRange) {
+            if (playerState.IsDrilling && isPlayerInRange) {
                 drilledTime += Time.deltaTime;
             }
 

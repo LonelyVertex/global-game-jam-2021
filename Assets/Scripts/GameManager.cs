@@ -20,17 +20,27 @@ public class GameManager
 
     public event Action OnGameStart;
     public event Action OnGameOver;
+    public event Action OnGameComplete;
+    public event Action OnBoxCollected;
 
     bool gameStarted;
 
     // This should be in PlayerState
     public bool IsPlayerDrilling { get; private set; }
+    public int BoxesCollected { get; private set; }
+    public int CurrentLevelBoxes { get; private set; }
+
+    int currentLevel = 0;
 
     public void StartGame()
     {
-        if (gameConfiguration.Levels.Count == 0) return;
+        if (currentLevel >= gameConfiguration.Levels.Count)
+        {
+            GameComplete();
+            return;
+        }
 
-        levelGenerator.Generate(gameConfiguration.Levels[0]);
+        levelGenerator.Generate(gameConfiguration.Levels[currentLevel]);
         
         PlacePlayer();
         energyHandler.RefillEnergy();
@@ -38,6 +48,8 @@ public class GameManager
         
         playerInputHandler.EnablePlayerInput();
         gameStarted = true;
+        BoxesCollected = 0;
+        CurrentLevelBoxes = levelGenerator.SpawnedBoxes;
         OnGameStart?.Invoke();
     }
 
@@ -55,9 +67,24 @@ public class GameManager
         OnGameOver?.Invoke();
     }
 
+    public void LevelComplete()
+    {
+        currentLevel++;
+        playerInputHandler.DisablePlayerInput();
+        
+        // TODO transition
+        StartGame();
+    }
+
+    void GameComplete()
+    {
+        Debug.Log("Game Complete");
+    }
+
     public void ResourceBoxCollected(ResourceBox resourceBox)
     {
-        Debug.Log("Resource box collected");
+        BoxesCollected++;
+        OnBoxCollected?.Invoke();
     }
 
     public void SetPlayerDrilling(bool isPlayerDrilling)

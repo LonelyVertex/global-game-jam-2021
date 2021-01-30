@@ -10,12 +10,12 @@ namespace Camera
         [SerializeField]
         CinemachineVirtualCamera cinemachineVirtualCamera;
 
-        [Inject(Id = Identifiers.PlayerTransform)]
-        Transform playerTransform;
+        [Inject(Id = Identifiers.PlayerCharacterController)]
+        CharacterController playerCharacterController;
 
         void Start()
         {
-            cinemachineVirtualCamera.Follow = playerTransform;
+            cinemachineVirtualCamera.Follow = playerCharacterController.transform;
         }
     }
 }

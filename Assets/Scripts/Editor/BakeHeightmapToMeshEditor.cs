@@ -1,4 +1,5 @@
 using System.IO;
+using Tiles;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Windows;
@@ -84,7 +85,7 @@ public class BakeHeightmapToMeshEditor : EditorWindow
         
         AssetDatabase.AddObjectToAsset(meshCopy, prefab); 
         AssetDatabase.AddObjectToAsset(colliderMeshCopy, prefab);
-        
+
         AssetDatabase.SaveAssets();
         
         DestroyImmediate(source);

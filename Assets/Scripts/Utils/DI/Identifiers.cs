@@ -2,6 +2,6 @@ namespace Utils.DI
 {
     public enum Identifiers
     {
-        PlayerTransform = 1,
+        PlayerCharacterController = 1,
     }
 }

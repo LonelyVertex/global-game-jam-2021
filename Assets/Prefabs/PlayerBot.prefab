@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 661213921613551618}
   - component: {fileID: 5308861032876405551}
   - component: {fileID: 4781977234568973362}
-  - component: {fileID: 1401759990}
   m_Layer: 0
   m_Name: Collider
   m_TagString: PLAYER
@@ -82,20 +81,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1401759990
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2239766260629916337}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.50000006
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8583346081070682514
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,9 +90,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6043739661959495334}
-  - component: {fileID: 4075320628402952106}
   - component: {fileID: 7327497077951830191}
   - component: {fileID: 1332466547667109631}
+  - component: {fileID: 2113553796597625544}
   m_Layer: 0
   m_Name: PlayerBot
   m_TagString: Untagged
@@ -130,22 +115,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &4075320628402952106
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8583346081070682514}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0.05
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!114 &7327497077951830191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,8 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9257b9401cc14d5eb7aa37671bdc726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 4075320628402952106}
-  movementSpeedConstant: 30
+  characterController: {fileID: 2113553796597625544}
+  movementSpeedConstant: 10
   maxSpeed: 3
   rotationSpeed: 540
 --- !u!114 &1332466547667109631
@@ -174,3 +143,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a40c714ed814e4a3994b9d852479f29f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!143 &2113553796597625544
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583346081070682514}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.8
+  m_Radius: 0.5
+  m_SlopeLimit: 5
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.9, z: 0}

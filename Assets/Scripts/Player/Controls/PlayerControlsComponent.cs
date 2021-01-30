@@ -7,11 +7,12 @@ namespace Player.Controls
     {
         [Inject]
         PlayerInputHandler playerInputHandler;
+        
         [Inject]
         GameManager gameManager;
 
         [SerializeField]
-        Rigidbody rigidbody;
+        CharacterController characterController;
 
         [SerializeField]
         float movementSpeedConstant = 30;
@@ -56,9 +57,7 @@ namespace Player.Controls
 
         void FixedUpdate()
         {
-            if (rigidbody.velocity.magnitude <= maxSpeed) {
-                rigidbody.AddForce(movementSpeedConstant * playerInputHandler.MovementVector3);
-            }
+            characterController.SimpleMove(movementSpeedConstant * playerInputHandler.MovementVector3);
 
             if (!Mathf.Approximately(playerInputHandler.MovementVector3.magnitude, 0)) {
                 nextRotation = Quaternion.LookRotation(playerInputHandler.MovementVector3, Vector3.up);

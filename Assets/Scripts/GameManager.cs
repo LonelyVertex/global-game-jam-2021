@@ -52,6 +52,7 @@ public class GameManager
     {
         energyHandler.OnEnergyDepleeted -= GameOver;
         playerInputHandler.DisablePlayerInput();
+        OnGameOver?.Invoke();
     }
 
     public void ResourceBoxCollected(ResourceBox resourceBox)

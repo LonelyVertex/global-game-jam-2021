@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5308861032876405551}
   - component: {fileID: 4781977234568973362}
   m_Layer: 0
-  m_Name: Collider
-  m_TagString: PLAYER
+  m_Name: Mesh
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2113553796597625544}
   m_Layer: 0
   m_Name: PlayerBot
-  m_TagString: Untagged
+  m_TagString: PLAYER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

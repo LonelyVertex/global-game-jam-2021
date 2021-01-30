@@ -10,7 +10,6 @@ namespace UI
         
         [Inject] GameManager gameManager;
         
-
         public void StartGame()
         {
             gameManager.StartGame();

@@ -191,24 +191,42 @@ namespace Generator
         {
             var possibleTiles = tiles.Where(tile => tile.IsEmptyTile).ToList();
 
-            for (var i = 0; i < gridSize; i++)
+            var minTop = int.MaxValue;
+            var maxTop = int.MinValue;
+            var minLeft = int.MaxValue;
+            var maxLeft = int.MinValue;
+
+            for (var top = 0; top < gridSize; top++)
             {
-                for (var j = 0; j < gridSize; j++)
+                for (var left = 0; left < gridSize; left++)
                 {
-                    if (grid[i, j] == -1)
+                    if (grid[top, left] != -1)
+                    {
+                        minTop = Mathf.Min(top, minTop);
+                        maxTop = Mathf.Max(top, maxTop);
+                        minLeft = Mathf.Min(left, minLeft);
+                        maxLeft = Mathf.Max(left, maxLeft);
+                    }
+
+                }
+            }
+
+            for (var top = minTop - 1; top <= maxTop + 1; top++)
+            {
+                for (var left = minLeft - 1; left <= maxLeft + 1; left++)
+                {
+                    if (left < 0 || left >= gridSize || top < 0 || top >= gridSize || grid[top, left] == -1)
                     {
                         var selectedTile = PickRandomTile(possibleTiles);
-                        InstantiateTile(selectedTile, i, j);
+                        InstantiateTile(selectedTile, top, left, false);
+                        
                     }
                 }
             }
         }
 
-        void InstantiateTile(TileDefinition tileDefinition, int top, int left)
+        void InstantiateTile(TileDefinition tileDefinition, int top, int left, bool contentTile = true)
         {
-            grid[top, left] = (int) tileDefinition.TileType;
-            tilesPlaced++;
-
             var obj = diContainer.InstantiatePrefab(
                 tileDefinition.Prefab, new Vector3(left * TileSize, 0, -top * TileSize),
                 tileDefinition.Rotation, null);
@@ -216,14 +234,21 @@ namespace Generator
             spawnedObjects.Add(obj.gameObject);
 
             var prefab = obj.GetComponent<TilePrefab>();
-            if (prefab.BoxPoints != null)
+            
+            if (contentTile)
             {
-                boxPoints.AddRange(prefab.BoxPoints);
-            }
+                grid[top, left] = (int) tileDefinition.TileType;
+                tilesPlaced++;
+                
+                if (prefab.BoxPoints != null)
+                {
+                    boxPoints.AddRange(prefab.BoxPoints);
+                }
 
-            if (prefab.MinePoints != null)
-            {
-                minePoints.AddRange(prefab.MinePoints);
+                if (prefab.MinePoints != null)
+                {
+                    minePoints.AddRange(prefab.MinePoints);
+                }
             }
         }
 

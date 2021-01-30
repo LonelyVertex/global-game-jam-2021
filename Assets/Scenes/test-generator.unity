@@ -155,6 +155,8 @@ MonoBehaviour:
   sGridSize: 19
   sMinTiles: 20
   sMaxTiles: 30
+  sBoxCount: 10
+  sMineCount: 20
   bases:
   - {fileID: 11400000, guid: 526cdf781399e43488ee546179b8f847, type: 2}
   - {fileID: 11400000, guid: 2cd1bced54a694a118a76deef7071317, type: 2}
@@ -177,6 +179,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d2811e03bc94649f4b466fe09cd90a11, type: 2}
   - {fileID: 11400000, guid: 34c97628ebadc4b1892fd0a4cdb2e737, type: 2}
   - {fileID: 11400000, guid: 66f18d74927294d5a8f46f922c2370f7, type: 2}
+  boxPrefab: {fileID: 7738677786128285985, guid: fb2a43d1e140b40e7a58fa2dd1006bf4, type: 3}
+  minePrefab: {fileID: 4916433221988500082, guid: 34e2e9ce2ba504e73a94ed518639ff20, type: 3}
 --- !u!4 &40633210
 Transform:
   m_ObjectHideFlags: 0
@@ -220,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d27c5b5c0364e73ad0cbf5483b4f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 50f80b3307542472da908ccc5167b55c, type: 2}
+  tileDefinition: {fileID: 0}
 --- !u!4 &759456302
 Transform:
   m_ObjectHideFlags: 0

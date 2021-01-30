@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
   levels:
-  - gridSize: 11
-    minTiles: 8
-    maxTiles: 12
-    boxCount: 10
-    mineCount: 20
+  - gridSize: 5
+    minTiles: 1
+    maxTiles: 1
+    boxCount: 1
+    mineCount: 3
+  - gridSize: 7
+    minTiles: 2
+    maxTiles: 3
+    boxCount: 2
+    mineCount: 5

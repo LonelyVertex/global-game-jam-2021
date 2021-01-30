@@ -4,6 +4,7 @@ using GamePlay;
 using ModestTree;
 using Tiles;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,7 @@ namespace Generator
 
         [Inject] MineTrapGenerator mineTrapGenerator;
         [Inject] ResourceBoxGenerator resourceBoxGenerator;
+        [Inject] DiContainer diContainer;
 
         int gridSize;
         int minTiles;
@@ -38,6 +40,7 @@ namespace Generator
         int Middle => Mathf.FloorToInt(gridSize / 2.0f);
 
         public Vector3 SpawnPoint => new Vector3(Middle * TileSize, 1, -Middle * TileSize);
+        public int SpawnedBoxes { get; private set; }
 
         public void Generate(GameConfiguration.LevelConfiguration levelConfiguration)
         {
@@ -206,8 +209,9 @@ namespace Generator
             grid[top, left] = (int) tileDefinition.TileType;
             tilesPlaced++;
 
-            var obj = Instantiate(tileDefinition.Prefab, new Vector3(left * TileSize, 0, -top * TileSize),
-                tileDefinition.Rotation);
+            var obj = diContainer.InstantiatePrefab(
+                tileDefinition.Prefab, new Vector3(left * TileSize, 0, -top * TileSize),
+                tileDefinition.Rotation, null);
             obj.transform.localScale = tileDefinition.Scale;
             spawnedObjects.Add(obj.gameObject);
 
@@ -235,7 +239,9 @@ namespace Generator
 
         void PlaceAllObjects()
         {
-            resourceBoxGenerator.SpawnBoxes(boxPoints.OrderBy(p => Random.value).Take(boxCount));
+            var boxes = boxPoints.OrderBy(p => Random.value).Take(boxCount);
+            SpawnedBoxes = boxes.Count();
+            resourceBoxGenerator.SpawnBoxes(boxes);
             mineTrapGenerator.SpawnMines(minePoints.OrderBy(p => Random.value).Take(mineCount));
         }
 

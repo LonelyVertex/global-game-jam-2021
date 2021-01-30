@@ -1,6 +1,5 @@
 using Cinemachine;
 using UnityEngine;
-using Utils.DI;
 using Zenject;
 
 namespace Camera

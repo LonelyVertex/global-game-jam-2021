@@ -5,7 +5,6 @@ using Player.State;
 using Resources;
 using Traps;
 using UnityEngine;
-using Utils.DI;
 using Zenject;
 
 namespace DI.Installers

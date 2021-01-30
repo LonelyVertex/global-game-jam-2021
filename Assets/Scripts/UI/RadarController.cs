@@ -17,6 +17,9 @@ namespace UI
         [Inject]
         PlayerStateComponent playerStateComponent;
 
+        [Inject]
+        GameManager gameManager;
+
         [SerializeField]
         RectTransform radarRectTransform;
 
@@ -45,14 +48,37 @@ namespace UI
 
         void Start()
         {
-            resourceBoxGenerator.OnBoxSpawned += AddBoxDot;
-            resourceBoxGenerator.OnBoxDespawned += RemoveBoxDot;
+            gameManager.OnGameStart += Reinitialize;
+            resourceBoxGenerator.OnBoxCollected += RemoveBoxDot;
         }
 
         void OnDestroy()
         {
-            resourceBoxGenerator.OnBoxSpawned -= AddBoxDot;
-            resourceBoxGenerator.OnBoxDespawned -= RemoveBoxDot;
+            gameManager.OnGameStart -= Reinitialize;
+            resourceBoxGenerator.OnBoxCollected -= RemoveBoxDot;
+        }
+
+        void OnEnable()
+        {
+            Reinitialize();
+        }
+
+        void Reinitialize()
+        {
+            ClearResourceBoxPools();
+            foreach (var resourceBox in resourceBoxGenerator.ResourceBoxes) {
+                AddBoxDot(resourceBox);
+            }
+        }
+
+        void ClearResourceBoxPools()
+        {
+            foreach (var radarDotInstance in radarDots.Values) {
+                Destroy(radarDotInstance);
+            }
+            radarDots.Clear();
+            radarDotsRectTransforms.Clear();
+            radarDotsImages.Clear();
         }
 
         void AddBoxDot(ResourceBox box)
@@ -73,7 +99,14 @@ namespace UI
             if (radarDots.TryGetValue(box, out dotInstance)) {
                 Destroy(dotInstance);
                 radarDots.Remove(box);
+            }
+
+            if (radarDotsImages.ContainsKey(box)) {
                 radarDotsImages.Remove(box);
+            }
+
+            if (radarDotsRectTransforms.ContainsKey(box)) {
+                radarDotsRectTransforms.Remove(box);
             }
         }
 

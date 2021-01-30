@@ -8,7 +8,6 @@ namespace Camera
     {
         [SerializeField]
         CinemachineVirtualCamera cinemachineVirtualCamera;
-
         CinemachineFramingTransposer framingTransposer;
 
         [Inject]

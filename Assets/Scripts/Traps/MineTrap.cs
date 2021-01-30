@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using Player.Energy;
 using UnityEngine;
 using Zenject;
@@ -13,10 +14,14 @@ namespace Traps
         [Inject]
         EnergyHandler energyHandler;
 
+        [SerializeField] 
+        CinemachineImpulseSource impulseSource;
+
         public event Action<MineTrap> OnTrapTrigger;
 
         protected override void TriggerTrap()
         {
+            impulseSource.GenerateImpulse();
             energyHandler.DrainPercentage(percentageEnergyDrain);
             OnTrapTrigger?.Invoke(this);
         }

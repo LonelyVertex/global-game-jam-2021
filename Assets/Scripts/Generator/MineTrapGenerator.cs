@@ -10,6 +10,9 @@ namespace Generator
         [Inject]
         MineTrap.Factory mineTrapFactory;
 
+        [Inject]
+        MineTrapEffect.EffectFactory mineTrapEffectFactory;
+
         public void SpawnMines(IEnumerable<Transform> parents)
         {
             foreach (var parent in parents) {
@@ -20,6 +23,8 @@ namespace Generator
         void OnTrapTrigger(MineTrap obj)
         {
             obj.OnTrapTrigger -= OnTrapTrigger;
+            
+            mineTrapEffectFactory.Spawn(obj.transform.position);
             mineTrapFactory.Despawn(obj);
         }
 

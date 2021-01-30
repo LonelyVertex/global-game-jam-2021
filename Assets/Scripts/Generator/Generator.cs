@@ -3,7 +3,6 @@ using System.Linq;
 using ModestTree;
 using Tiles;
 using UnityEngine;
-using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Generator

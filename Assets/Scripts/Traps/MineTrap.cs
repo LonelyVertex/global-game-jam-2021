@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Player.Energy;
 using UnityEngine;
 using Zenject;
@@ -14,15 +13,12 @@ namespace Traps
         [Inject]
         EnergyHandler energyHandler;
 
-        List<Action<MineTrap>> onTrapTrigger = new List<Action<MineTrap>>();
-        public event Action<MineTrap> OnTrapTrigger {
-            add => onTrapTrigger.Add(value);
-            remove => onTrapTrigger.Remove(value);
-        }
+        public event Action<MineTrap> OnTrapTrigger;
 
         protected override void TriggerTrap()
         {
             energyHandler.DrainPercentage(percentageEnergyDrain);
+            OnTrapTrigger?.Invoke(this);
         }
 
         void Initialize(Vector3 position)

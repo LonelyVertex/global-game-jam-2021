@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Player.ScriptableObjects;
 using UnityEngine;
 using Zenject;
@@ -9,16 +8,12 @@ namespace Player.Energy
     public class EnergyHandler: ITickable
     {
         int currentEnergy;
-        List<Action> onEnergyDepleeted = new List<Action>();
 
         const float ENERGY_TICKS_PER_SECOND = 1.0f;
         float previousTickTime = 0.0f;
         ILogger logger;
 
-        public event Action OnEnergyDepleeted {
-            add => onEnergyDepleeted.Add(value);
-            remove => onEnergyDepleeted.Remove(value);
-        }
+        public event Action OnEnergyDepleeted;
 
         public bool IsEnergyTickingEnabled { get; private set; }
         public int CurrentEnergy {
@@ -29,7 +24,7 @@ namespace Player.Energy
                     currentEnergy = 0;
                     logger.Log($"Energy drained to: {currentEnergy}");
 
-                    onEnergyDepleeted.ForEach(action => action());
+                    OnEnergyDepleeted?.Invoke();
                     return;
                 }
 

@@ -21,16 +21,17 @@ namespace Traps
             OnTrapTrigger?.Invoke(this);
         }
 
-        void Initialize(Vector3 position)
+        void Initialize(Transform parent)
         {
-            transform.position = position;
+            transform.SetParent(parent);
+            transform.localPosition = Vector3.zero;
         }
 
-        public class Factory : MonoMemoryPool<Vector3, MineTrap>
+        public class Factory : MonoMemoryPool<Transform, MineTrap>
         {
-            protected override void Reinitialize(Vector3 p1, MineTrap item)
+            protected override void Reinitialize(Transform parent, MineTrap item)
             {
-                item.Initialize(p1);
+                item.Initialize(parent);
             }
         }
     }

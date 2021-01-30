@@ -10,10 +10,10 @@ namespace Generator
         [Inject]
         MineTrap.Factory mineTrapFactory;
 
-        public void SpawnMines(List<Transform> positions)
+        public void SpawnMines(IEnumerable<Transform> parents)
         {
-            foreach (var position in positions) {
-                mineTrapFactory.Spawn(position.position).OnTrapTrigger += OnTrapTrigger;
+            foreach (var parent in parents) {
+                SpawnMine(parent);
             }
         }
 
@@ -25,7 +25,7 @@ namespace Generator
 
         public void SpawnMine(Transform transform)
         {
-            mineTrapFactory.Spawn(transform.position).OnTrapTrigger += OnTrapTrigger;
+            mineTrapFactory.Spawn(transform).OnTrapTrigger += OnTrapTrigger;
         }
     }
 }

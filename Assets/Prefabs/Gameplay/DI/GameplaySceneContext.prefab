@@ -80,4 +80,5 @@ MonoBehaviour:
   playerPrefab: {fileID: 8583346081070682514, guid: 4e601563d0d4a41be885171f52296fa6, type: 3}
   generatorPrefab: {fileID: 8454539267587648849, guid: d8c9541bd1b444f848774f4087762805, type: 3}
   minePrefab: {fileID: 2271973956817257361, guid: 4c97baa5253f84d1b926f6fb3b5694fe, type: 3}
+  mineExplosionPrefab: {fileID: 4321142523618358411, guid: ef84f17b69cf1a74692f099b4529e218, type: 3}
   resourceBoxPrefab: {fileID: 7738677786128285985, guid: fb2a43d1e140b40e7a58fa2dd1006bf4, type: 3}

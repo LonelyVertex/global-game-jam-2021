@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5969901aa40942499363f92e3787110, type: 3}
+  m_Name: MineTriggerImpulseSource
+  m_EditorClassIdentifier: 
+  m_XCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.029121365
+      outSlope: 0.029121365
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 0.3688539
+    - serializedVersion: 3
+      time: 0.2922203
+      value: 0.019144034
+      inSlope: -0.011651229
+      outSlope: -0.011651229
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.3078654
+      outWeight: 0.33982927
+    - serializedVersion: 3
+      time: 0.68431973
+      value: -0.010065967
+      inSlope: -0.01937442
+      outSlope: -0.01937442
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.3342325
+      outWeight: 0.32555044
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.11350132
+      outSlope: 0.11350132
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.22883157
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_YCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.73355633
+      outSlope: -0.73355633
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.3352363
+    - serializedVersion: 3
+      time: 0.28813845
+      value: -0.069260925
+      inSlope: -0.0017125767
+      outSlope: -0.0017125767
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.33237356
+      outWeight: 0.374341
+    - serializedVersion: 3
+      time: 0.7568432
+      value: 0.023448376
+      inSlope: 0.016815813
+      outSlope: 0.016815813
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.3251768
+      outWeight: 0.32048514
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.20232457
+      outSlope: -0.20232457
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.3604371
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_ZCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.0270606
+      outSlope: 1.0270606
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1923077
+      value: 0.19751166
+      inSlope: -0.15299654
+      outSlope: -0.15299654
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49345458
+      value: -0.20393328
+      inSlope: -0.10132712
+      outSlope: -0.10132712
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.730918
+      value: 0.06449522
+      inSlope: 0.44535667
+      outSlope: 0.44535667
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.23968612
+      outSlope: -0.23968612
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

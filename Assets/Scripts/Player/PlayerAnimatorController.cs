@@ -28,8 +28,6 @@ public class PlayerAnimatorController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(playerState.IsDrilling);
-        
         animator.SetFloat(movingParamId, playerInputHandler.IsMoving ? 1.0f : 0.0f);
         animator.SetBool(drillingParamId, playerState.IsDrilling);
     }

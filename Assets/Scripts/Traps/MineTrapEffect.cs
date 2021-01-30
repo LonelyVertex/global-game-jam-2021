@@ -1,0 +1,28 @@
+using UnityEngine;
+using Zenject;
+
+public class MineTrapEffect : MonoBehaviour
+{
+    public class EffectFactory : MonoMemoryPool<Vector3, MineTrapEffect>
+    {
+        protected override void Reinitialize(Vector3 position, MineTrapEffect item)
+        {
+            item.Initialize(position);
+        }
+    }
+
+    [Inject]
+    EffectFactory effectFactory;
+    
+    private void Initialize(Vector3 position)
+    {
+        transform.position = position;
+
+        Invoke(nameof(Despawn), 5.0f);
+    }
+
+    private void Despawn()
+    {
+        effectFactory.Despawn(this);
+    }
+}

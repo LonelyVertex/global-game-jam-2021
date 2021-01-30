@@ -21,12 +21,15 @@ namespace DI.Installers
         GameObject minePrefab;
 
         [SerializeField]
+        GameObject mineExplosionPrefab;
+
+        [SerializeField]
         GameObject resourceBoxPrefab;
 
         public override void InstallBindings()
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnergyHandler>().AsSingle(); 
             Container.Bind(typeof(CharacterController), typeof(PlayerStateComponent))
                 .FromComponentInNewPrefab(playerPrefab).AsSingle();
             Container.Bind<MineTrapGenerator>().AsSingle();
@@ -36,6 +39,8 @@ namespace DI.Installers
             Container.Bind<ResourceBoxGenerator>().AsSingle();
             Container.BindMemoryPool<ResourceBox, ResourceBox.Factory>().WithInitialSize(4)
                 .FromComponentInNewPrefab(resourceBoxPrefab);
+            Container.BindMemoryPool<MineTrapEffect, MineTrapEffect.EffectFactory>().WithInitialSize(4)
+                .FromComponentInNewPrefab(mineExplosionPrefab);
         }
     }
 }

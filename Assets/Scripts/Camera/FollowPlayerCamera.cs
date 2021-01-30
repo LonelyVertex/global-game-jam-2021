@@ -12,7 +12,7 @@ namespace Camera
 
         CinemachineFramingTransposer framingTransposer;
 
-        [Inject(Id = Identifiers.PlayerCharacterController)]
+        [Inject]
         CharacterController playerCharacterController;
 
         void Start()

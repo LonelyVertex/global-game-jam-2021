@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace UI
@@ -8,6 +9,7 @@ namespace UI
         [SerializeField] GameObject preGameUI;
         [SerializeField] GameObject gameOverUI;
         [SerializeField] GameObject gameplayUI;
+        [SerializeField] CoverController cover;
 
         [Inject] GameManager gameManager;
         
@@ -15,6 +17,7 @@ namespace UI
         {
             gameManager.OnGameStart += OnGameStart;
             gameManager.OnGameOver += OnGameOver;
+            gameManager.OnLevelComplete += OnLevelComplete;
             
             gameManager.StartGame();
         }
@@ -24,6 +27,12 @@ namespace UI
             preGameUI.SetActive(false);
             gameOverUI.SetActive(false);
             gameplayUI.SetActive(true);
+            cover.FadeOut();
+        }
+
+        void OnLevelComplete()
+        {
+            cover.FadeIn();
         }
 
         void OnGameOver()

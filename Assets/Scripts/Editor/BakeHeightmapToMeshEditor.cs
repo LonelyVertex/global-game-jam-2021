@@ -1,31 +1,23 @@
 using System.IO;
-using Tiles;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class BakeHeightmapToMeshEditor : EditorWindow
 {
     [MenuItem(itemName: "Tools/BakeHeightmapToMeshEditor")]
     public static void Init()
     {
-        EditorWindow.CreateWindow<BakeHeightmapToMeshEditor>();
+        CreateWindow<BakeHeightmapToMeshEditor>();
     }
 
-    private Texture2D _heightMapTexture;
     private GameObject _baseTerrainMeshGameObject;
     private Mesh _baseCollisionMesh;
     private Material _meshMaterial;
     private Vector2 _displacementScale;
-    
+
     private void OnGUI()
     {
         EditorGUILayout.LabelField("Height Texture Properties", EditorStyles.boldLabel);
-        _heightMapTexture = (Texture2D)EditorGUILayout.ObjectField(
-            "Heightmap Texture",
-            _heightMapTexture,
-            typeof(Texture2D),
-            allowSceneObjects: false);
         _displacementScale = EditorGUILayout.Vector2Field("Displacement Scale", _displacementScale);
 
         EditorGUILayout.Space();
@@ -48,7 +40,6 @@ public class BakeHeightmapToMeshEditor : EditorWindow
 
         if (
             GUILayout.Button("Bake Heightmap") &&
-            _heightMapTexture != null &&
             _baseTerrainMeshGameObject != null &&
             _baseCollisionMesh != null
         ) {
@@ -58,20 +49,38 @@ public class BakeHeightmapToMeshEditor : EditorWindow
 
     private void BakeHeightmap()
     {
+        BakeSingleHeightmap(false, false, false, false, false, false);
+        /* BakeSingleHeightmap(false, true, false, false, true, false);
+        BakeSingleHeightmap(true, true, false, false, false, false);
+        BakeSingleHeightmap(false, true, false, true, false, false);
+        BakeSingleHeightmap(true, true, true, false, true, false);
+        BakeSingleHeightmap(true, true, true, true, true, false);
+        BakeSingleHeightmap(false, true, false, false, false, true); */
+    }
+
+    private void BakeSingleHeightmap(bool top, bool right, bool bottom, bool left, bool center, bool isBase)
+    {
         var source = (GameObject)PrefabUtility.InstantiatePrefab(_baseTerrainMeshGameObject);
 
         var originalMeshFilter = _baseTerrainMeshGameObject.GetComponent<MeshFilter>();
         
         var meshCopy = CopyMesh(originalMeshFilter.sharedMesh);
-        AdjustMeshBasedOnHeightMap(meshCopy, _heightMapTexture);
+        AdjustMeshBasedOnHeightMap(meshCopy, top, right, bottom, left, center, isBase);
         meshCopy.name = "Mesh";
 
         var colliderMeshCopy = CopyMesh(_baseCollisionMesh);
-        AdjustMeshBasedOnHeightMap(colliderMeshCopy, _heightMapTexture);
+        AdjustMeshBasedOnHeightMap(colliderMeshCopy, top, right, bottom, left, center, isBase);
         colliderMeshCopy.name = "ColliderMesh";
+
+        var topStr = top ? "T" : "";
+        var rightStr = right ? "R" : "";
+        var bottomStr = bottom ? "B" : "";
+        var leftStr = left ? "L" : "";
+        var centerStr = center ? "C" : "";
+        var baseStr = isBase ? "Base" : "";
         
         var meshDirectory = $"{Path.GetDirectoryName(AssetDatabase.GetAssetPath(_baseTerrainMeshGameObject))}";
-        var newObjectName = $"Tile_{_heightMapTexture.name}_{_displacementScale.x}_{_displacementScale.y}.prefab";
+        var newObjectName = $"Tile_{topStr}{rightStr}{bottomStr}{leftStr}{centerStr}{baseStr}_{_displacementScale.x}_{_displacementScale.y}.prefab";
         var prefab = PrefabUtility.SaveAsPrefabAsset(source, Path.Combine(meshDirectory, "Tiles" ,newObjectName));
         
         var prefabMeshRenderer = prefab.GetComponent<MeshRenderer>();
@@ -91,22 +100,102 @@ public class BakeHeightmapToMeshEditor : EditorWindow
         DestroyImmediate(source);
     }
 
-    private void AdjustMeshBasedOnHeightMap(Mesh mesh, Texture2D texture)
+    private void AdjustMeshBasedOnHeightMap(Mesh mesh, bool top, bool right, bool bottom, bool left, bool center, bool isBase)
     {
         var vertices = mesh.vertices;
-        var uvs = mesh.uv;
         var vertexColors = new Color[vertices.Length];
 
+        var centerRadius = 10.0f;
+        var rightRect = new Rect(0, -5, 19, 10);
+        var topRect = new Rect(-5, -2, 10, 19);
+        var leftRect = new Rect(-17, -5, 19, 10);
+        var bottomRect = new Rect(-5, -17, 10, 19);
+        var bigRectCenter = new Rect(-10, -10, 20, 20);
+        
         for (var i = 0; i < vertices.Length; i++)
         {
-            var uv = uvs[i];
             var vertex = vertices[i];
             
-            var color = texture.GetPixelBilinear(uv.x, uv.y, 0);
+            var color = Color.white;
+            var newVertex = vertex + Vector3.up * _displacementScale.y;
+            var vertexFlatPos = new Vector2(vertex.x, vertex.z);
 
-            vertex += Vector3.up * Mathf.Lerp(_displacementScale.x, _displacementScale.y, color.r);
+            if (right)
+            {
+                var distToRightRaw = Mathf.InverseLerp(0, 4, DistancePointToRectangle(vertexFlatPos, rightRect));
+                var distToRight = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 
+                    1 - distToRightRaw);
+                newVertex -= Vector3.up * distToRight;    
+            }
+
+            if (left)
+            {
+                var distToLeftRaw = Mathf.InverseLerp(0, 4, DistancePointToRectangle(vertexFlatPos, leftRect));
+                var distToLeft = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 1 - distToLeftRaw);
+                newVertex -= Vector3.up * distToLeft;
+            }
+
+            if (top)
+            {
+                var distToTopRaw = Mathf.InverseLerp(0, 4, DistancePointToRectangle(vertexFlatPos, topRect));
+                var distToTop = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 1 - distToTopRaw);
+                newVertex -= Vector3.up * distToTop;
+            }
+
+            if (bottom)
+            {
+                var distToBottomRaw = Mathf.InverseLerp(0, 4, DistancePointToRectangle(vertexFlatPos, bottomRect));
+                var distToBottom = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 1 - distToBottomRaw);
+                newVertex -= Vector3.up * distToBottom;    
+            }
+
+            if (center)
+            {
+                var distToCenterRaw = Mathf.InverseLerp(centerRadius, centerRadius + 4, Vector2.Distance(Vector3.zero, vertexFlatPos));
+                var distToCenter = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 1 - distToCenterRaw);
+                newVertex -= Vector3.up * distToCenter;    
+            }
+
+            if (isBase)
+            {
+                var distToBaseRaw = Mathf.InverseLerp(0, 4, DistancePointToRectangle(vertexFlatPos, bigRectCenter));
+                var distToBase = Mathf.SmoothStep(_displacementScale.x, _displacementScale.y, 1 - distToBaseRaw);
+                newVertex -= Vector3.up * distToBase;
+            }
             
-            vertices[i] = vertex;
+            newVertex = new Vector3(newVertex.x, Mathf.Max(0, newVertex.y), newVertex.z);
+            
+            if (rightRect.Contains(vertexFlatPos) && right)
+            {
+                color = Color.black;
+            }
+
+            if (leftRect.Contains(vertexFlatPos) && left)
+            {
+                color = Color.black;
+            }
+
+            if (topRect.Contains(vertexFlatPos) && top)
+            {
+                color = Color.black;
+            }
+
+            if (bottomRect.Contains(vertexFlatPos) && bottom)
+            {
+                color = Color.black;
+            }
+
+            if (Vector2.Distance(Vector2.zero, vertexFlatPos) < centerRadius && center)
+            {
+                color = Color.black;
+            }
+
+            if (bigRectCenter.Contains(vertexFlatPos) && isBase)
+            {
+                color = Color.black;
+            }
+
+            vertices[i] = newVertex;
             vertexColors[i] = color;
         }
 
@@ -120,6 +209,65 @@ public class BakeHeightmapToMeshEditor : EditorWindow
         mesh.RecalculateTangents();
     }
 
+    // Taken from https://wiki.unity3d.com/index.php/Distance_from_a_point_to_a_rectangle
+    private float DistancePointToRectangle(Vector2 point, Rect rect) {
+        //  Calculate a distance between a point and a rectangle.
+        //  The area around/in the rectangle is defined in terms of
+        //  several regions:
+        //
+        //  O--x
+        //  |
+        //  y
+        //
+        //
+        //        I   |    II    |  III
+        //      ======+==========+======   --yMin
+        //       VIII |  IX (in) |  IV
+        //      ======+==========+======   --yMax
+        //       VII  |    VI    |   V
+        //
+        //
+        //  Note that the +y direction is down because of Unity's GUI coordinates.
+ 
+        if (point.x < rect.xMin) { // Region I, VIII, or VII
+            if (point.y < rect.yMin) { // I
+                Vector2 diff = point - new Vector2(rect.xMin, rect.yMin);
+                return diff.magnitude;
+            }
+            else if (point.y > rect.yMax) { // VII
+                Vector2 diff = point - new Vector2(rect.xMin, rect.yMax);
+                return diff.magnitude;
+            }
+            else { // VIII
+                return rect.xMin - point.x;
+            }
+        }
+        else if (point.x > rect.xMax) { // Region III, IV, or V
+            if (point.y < rect.yMin) { // III
+                Vector2 diff = point - new Vector2(rect.xMax, rect.yMin);
+                return diff.magnitude;
+            }
+            else if (point.y > rect.yMax) { // V
+                Vector2 diff = point - new Vector2(rect.xMax, rect.yMax);
+                return diff.magnitude;
+            }
+            else { // IV
+                return point.x - rect.xMax;
+            }
+        }
+        else { // Region II, IX, or VI
+            if (point.y < rect.yMin) { // II
+                return rect.yMin - point.y;
+            }
+            else if (point.y > rect.yMax) { // VI
+                return point.y - rect.yMax;
+            }
+            else { // IX
+                return 0f;
+            }
+        }
+    }
+    
     private Mesh CopyMesh(Mesh baseMesh)
     {
         var mesh = new Mesh

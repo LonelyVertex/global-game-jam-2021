@@ -41,6 +41,7 @@ namespace Resources
             transform.SetParent(parent);
             transform.localPosition = Vector3.zero;
             drilledTime = 0.0f;
+            isPlayerInRange = false;
         }
 
         void Update()

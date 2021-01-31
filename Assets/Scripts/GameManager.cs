@@ -36,8 +36,9 @@ public class GameManager : ITickable
     float startTime;
     float endTime;
 
-    public float CurrentTime => endTime - startTime;
-    
+    public float GameCompleteTime => endTime - startTime;
+    public float CurrentTime => Time.time - startTime;
+
     public void StartGame()
     {
         currentLevel = 0;
@@ -107,7 +108,7 @@ public class GameManager : ITickable
     void SaveBestTime()
     {
         var previousBest = PlayerPrefs.GetFloat("bestTime", Mathf.Infinity);
-        PlayerPrefs.SetFloat("bestTime", Mathf.Min(CurrentTime, previousBest));
+        PlayerPrefs.SetFloat("bestTime", Mathf.Min(GameCompleteTime, previousBest));
     }
 
     public void ResourceBoxCollected(ResourceBox resourceBox)

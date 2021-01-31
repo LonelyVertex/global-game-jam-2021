@@ -20,6 +20,9 @@ namespace Player.Controls
         CharacterController characterController;
 
         [SerializeField]
+        PlayerAudioController audioController;
+
+        [SerializeField]
         float movementSpeedConstant = 30;
 
         [SerializeField]
@@ -27,7 +30,8 @@ namespace Player.Controls
 
         [SerializeField]
         float rotationSpeed = 540;
-
+        
+        
         Quaternion nextRotation;
         bool isDashing = false;
 
@@ -50,11 +54,13 @@ namespace Player.Controls
         void DrillStarted()
         {
             playerState.IsDrilling = true;
+            audioController.DrillStarted();
         }
 
         void DrillStopped()
         {
             playerState.IsDrilling = false;
+            audioController.DrillStopped();
         }
 
         void DashPerformed()
@@ -62,6 +68,8 @@ namespace Player.Controls
             isDashing = true;
             energyHandler.DrainDashEnergy();
             Invoke(nameof(CancelDash), 0.1f);
+            
+            audioController.Dash();
         }
 
         void Update()

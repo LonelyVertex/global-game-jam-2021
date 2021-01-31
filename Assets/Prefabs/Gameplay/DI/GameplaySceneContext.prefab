@@ -82,3 +82,4 @@ MonoBehaviour:
   minePrefab: {fileID: 2271973956817257361, guid: 4c97baa5253f84d1b926f6fb3b5694fe, type: 3}
   mineExplosionPrefab: {fileID: 4321142523618358411, guid: ef84f17b69cf1a74692f099b4529e218, type: 3}
   resourceBoxPrefab: {fileID: 7738677786128285985, guid: fb2a43d1e140b40e7a58fa2dd1006bf4, type: 3}
+  globalAudioPrefab: {fileID: 6316614683468153498, guid: 6748c40f01ca541e284ced3caf4e18c7, type: 3}

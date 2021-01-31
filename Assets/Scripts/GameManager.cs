@@ -35,6 +35,12 @@ public class GameManager : ITickable
     
     public void StartGame()
     {
+        currentLevel = 0;
+        StartLevel();
+    }
+
+    void StartLevel()
+    {
         if (currentLevel >= gameConfiguration.Levels.Count)
         {
             GameComplete();
@@ -81,12 +87,13 @@ public class GameManager : ITickable
     {
         shouldStartNextLevel = false;
         playerInputHandler.DisablePlayerInput();
-        StartGame();
+        StartLevel();
     }
 
     void GameComplete()
     {
-        Debug.Log("Game Complete");
+        playerInputHandler.DisablePlayerInput();
+        OnGameComplete?.Invoke();
     }
 
     public void ResourceBoxCollected(ResourceBox resourceBox)

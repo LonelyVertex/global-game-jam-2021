@@ -26,6 +26,9 @@ namespace DI.Installers
         [SerializeField]
         GameObject resourceBoxPrefab;
 
+        [SerializeField] 
+        GameObject globalAudioPrefab;
+
         public override void InstallBindings()
         {
             Container.Bind<PlayerInputHandler>().AsSingle();
@@ -41,6 +44,7 @@ namespace DI.Installers
                 .FromComponentInNewPrefab(resourceBoxPrefab);
             Container.BindMemoryPool<MineTrapEffect, MineTrapEffect.EffectFactory>().WithInitialSize(4)
                 .FromComponentInNewPrefab(mineExplosionPrefab);
+            Container.Bind<GlobalAudio>().FromComponentInNewPrefab(globalAudioPrefab).AsSingle();
         }
     }
 }

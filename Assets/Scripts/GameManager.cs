@@ -13,6 +13,7 @@ public class GameManager : ITickable
     [Inject] LevelGenerator levelGenerator;
     [Inject] EnergyHandler energyHandler;
     [Inject] PlayerInputHandler playerInputHandler;
+    [Inject] GlobalAudio globalAudio;
 
     [Inject]
     CharacterController playerCharacterController;
@@ -111,6 +112,7 @@ public class GameManager : ITickable
 
     public void ResourceBoxCollected(ResourceBox resourceBox)
     {
+        globalAudio.PlayCollectSound();
         BoxesCollected++;
         OnBoxCollected?.Invoke();
     }

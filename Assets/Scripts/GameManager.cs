@@ -128,4 +128,9 @@ public class GameManager : ITickable
             }
         }
     }
+
+    public float GetBoxPercentage()
+    {
+        return (float) BoxesCollected / CurrentLevelBoxes;
+    }
 }

@@ -79,5 +79,10 @@ namespace Player.Energy
         {
             CurrentEnergy -= DASH_ENERGY;
         }
+
+        public float GetEnergyPercentage()
+        {
+            return (float) CurrentEnergy / MaxEnergy;
+        }
     }
 }

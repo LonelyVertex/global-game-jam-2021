@@ -22,7 +22,7 @@ namespace UI
         {
             OpenMenu();
         }
-        
+
         public void StartGame()
         {
             Subscribe();
@@ -34,7 +34,7 @@ namespace UI
             HideAll();
             backgroundUI.SetActive(true);
             preGameUI.SetActive(true);
-            
+
             var bestTime = PlayerPrefs.GetFloat("bestTime", Mathf.Infinity);
 
             if (bestTime < Mathf.Infinity)
@@ -92,7 +92,7 @@ namespace UI
             backgroundUI.SetActive(false);
             gameplayUI.SetActive(false);
         }
-        
+
 
         void OnGameStart()
         {
@@ -108,9 +108,16 @@ namespace UI
 
         void OnGameOver()
         {
+            cover.FadeIn();
             Unsubscribe();
+
+            Invoke(nameof(ShowGameOverUI), CoverController.Duration);
+        }
+
+        void ShowGameOverUI()
+        {
             HideAll();
-            
+
             backgroundUI.SetActive(true);
             gameOverUI.SetActive(true);
         }
@@ -119,7 +126,7 @@ namespace UI
         {
             Unsubscribe();
             HideAll();
-            
+
             backgroundUI.SetActive(true);
             gameCompleteUI.SetActive(true);
             currentTimeText.text = TimeToString(gameManager.CurrentTime);

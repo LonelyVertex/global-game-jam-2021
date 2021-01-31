@@ -8,6 +8,9 @@ namespace UI
     {
         [SerializeField] GameObject preGameUI;
         [SerializeField] GameObject gameOverUI;
+        [SerializeField] GameObject gameCompleteUI;
+        [SerializeField] GameObject creditsUI;
+        [SerializeField] GameObject backgroundUI;
         [SerializeField] GameObject gameplayUI;
         [SerializeField] CoverController cover;
 
@@ -15,17 +18,67 @@ namespace UI
         
         public void StartGame()
         {
-            gameManager.OnGameStart += OnGameStart;
-            gameManager.OnGameOver += OnGameOver;
-            gameManager.OnLevelComplete += OnLevelComplete;
-            
+            Subscribe();
             gameManager.StartGame();
         }
 
-        void OnGameStart()
+        public void OpenMenu()
+        {
+            HideAll();
+            backgroundUI.SetActive(true);
+            preGameUI.SetActive(true);
+        }
+
+        public void OpenCredits()
+        {
+            HideAll();
+            backgroundUI.SetActive(true);
+            creditsUI.SetActive(true);
+        }
+
+        public void CloseCredits()
+        {
+            HideAll();
+            backgroundUI.SetActive(true);
+            preGameUI.SetActive(true);
+        }
+
+        public void QuitGame()
+        {
+            Debug.Log("Application Quit");
+            Application.Quit();
+        }
+
+        void Subscribe()
+        {
+            gameManager.OnGameStart += OnGameStart;
+            gameManager.OnLevelComplete += OnLevelComplete;
+            gameManager.OnGameComplete += OnGameComplete;
+            gameManager.OnGameOver += OnGameOver;
+        }
+
+        void Unsubscribe()
+        {
+            gameManager.OnGameStart -= OnGameStart;
+            gameManager.OnLevelComplete -= OnLevelComplete;
+            gameManager.OnGameComplete -= OnGameComplete;
+            gameManager.OnGameOver -= OnGameOver;
+        }
+
+        void HideAll()
         {
             preGameUI.SetActive(false);
             gameOverUI.SetActive(false);
+            gameCompleteUI.SetActive(false);
+            creditsUI.SetActive(false);
+            backgroundUI.SetActive(false);
+            gameplayUI.SetActive(false);
+        }
+        
+
+        void OnGameStart()
+        {
+            HideAll();
             gameplayUI.SetActive(true);
             cover.FadeOut();
         }
@@ -37,10 +90,20 @@ namespace UI
 
         void OnGameOver()
         {
-            gameManager.OnGameStart -= OnGameStart;
-            gameManager.OnGameOver -= OnGameOver;
+            Unsubscribe();
+            HideAll();
+            
+            backgroundUI.SetActive(true);
             gameOverUI.SetActive(true);
-            gameplayUI.SetActive(false);
+        }
+
+        void OnGameComplete()
+        {
+            Unsubscribe();
+            HideAll();
+            
+            backgroundUI.SetActive(true);
+            gameCompleteUI.SetActive(true);
         }
     }
 }

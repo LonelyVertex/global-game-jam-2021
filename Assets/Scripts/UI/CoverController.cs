@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CoverController : MonoBehaviour
 {
-    const float Duration = 2;
+    public const float Duration = 2;
 
     [SerializeField] Image image;
 

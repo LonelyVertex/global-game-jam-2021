@@ -13,11 +13,15 @@ public class MineTrapEffect : MonoBehaviour
 
     [Inject]
     EffectFactory effectFactory;
+
+    [SerializeField] 
+    AudioSource audioSource;
     
     private void Initialize(Vector3 position)
     {
         transform.position = position;
 
+        audioSource.Play();
         Invoke(nameof(Despawn), 5.0f);
     }
 

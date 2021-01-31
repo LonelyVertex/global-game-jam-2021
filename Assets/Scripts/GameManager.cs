@@ -32,10 +32,15 @@ public class GameManager : ITickable
 
     bool shouldStartNextLevel = false;
     float timeToNextLevel = 0;
+    float startTime;
+    float endTime;
+
+    public float CurrentTime => endTime - startTime;
     
     public void StartGame()
     {
         currentLevel = 0;
+        startTime = Time.time;
         StartLevel();
     }
 
@@ -92,8 +97,16 @@ public class GameManager : ITickable
 
     void GameComplete()
     {
+        endTime = Time.time;
         playerInputHandler.DisablePlayerInput();
+        SaveBestTime();
         OnGameComplete?.Invoke();
+    }
+
+    void SaveBestTime()
+    {
+        var previousBest = PlayerPrefs.GetFloat("bestTime", Mathf.Infinity);
+        PlayerPrefs.SetFloat("bestTime", Mathf.Min(CurrentTime, previousBest));
     }
 
     public void ResourceBoxCollected(ResourceBox resourceBox)

@@ -393,6 +393,8 @@ MonoBehaviour:
   backgroundUI: {fileID: 3058652624026947766}
   gameplayUI: {fileID: 2967541840177550011}
   cover: {fileID: 8670732648210171017}
+  bestTimeText: {fileID: 81773353374454995}
+  currentTimeText: {fileID: 1208536890721932539}
 --- !u!1 &243461449048487611
 GameObject:
   m_ObjectHideFlags: 0

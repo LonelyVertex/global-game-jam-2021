@@ -13,8 +13,15 @@ namespace UI
         [SerializeField] GameObject backgroundUI;
         [SerializeField] GameObject gameplayUI;
         [SerializeField] CoverController cover;
+        [SerializeField] Text bestTimeText;
+        [SerializeField] Text currentTimeText;
 
         [Inject] GameManager gameManager;
+
+        void Start()
+        {
+            OpenMenu();
+        }
         
         public void StartGame()
         {
@@ -27,6 +34,17 @@ namespace UI
             HideAll();
             backgroundUI.SetActive(true);
             preGameUI.SetActive(true);
+            
+            var bestTime = PlayerPrefs.GetFloat("bestTime", Mathf.Infinity);
+
+            if (bestTime < Mathf.Infinity)
+            {
+                bestTimeText.text = TimeToString(bestTime);
+            }
+            else
+            {
+                bestTimeText.text = "--:--";
+            }
         }
 
         public void OpenCredits()
@@ -104,6 +122,15 @@ namespace UI
             
             backgroundUI.SetActive(true);
             gameCompleteUI.SetActive(true);
+            currentTimeText.text = TimeToString(gameManager.CurrentTime);
+        }
+
+        static string TimeToString(float time)
+        {
+            var mins = (int) time / 60;
+            var secs = (int) time % 60;
+            var extraZero = secs < 10 ? "0" : "";
+            return $"{mins}:{extraZero}{secs}";
         }
     }
 }

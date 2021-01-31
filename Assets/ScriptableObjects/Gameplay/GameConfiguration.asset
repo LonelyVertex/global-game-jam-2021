@@ -16,10 +16,15 @@ MonoBehaviour:
   - gridSize: 5
     minTiles: 1
     maxTiles: 1
-    boxCount: 1
+    boxCount: 3
     mineCount: 3
   - gridSize: 7
     minTiles: 2
     maxTiles: 3
-    boxCount: 2
+    boxCount: 5
     mineCount: 5
+  - gridSize: 9
+    minTiles: 3
+    maxTiles: 5
+    boxCount: 7
+    mineCount: 10

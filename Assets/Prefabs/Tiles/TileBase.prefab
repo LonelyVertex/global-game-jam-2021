@@ -326,6 +326,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2172867539674451211, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
+      propertyPath: door
+      value: 
+      objectReference: {fileID: 5169431758091805665}
     - target: {fileID: 3123053843239936712, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -370,6 +374,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3783766846280637990, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5041633101986528976, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
       propertyPath: m_Name
       value: BaseTile
@@ -379,6 +387,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6266679274646804277, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337241912825224396, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055917211554247017, guid: 187a627eb293e6940bf0e4642d181e64, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}

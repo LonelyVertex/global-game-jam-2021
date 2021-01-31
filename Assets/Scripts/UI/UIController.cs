@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -15,12 +17,18 @@ namespace UI
         [SerializeField] CoverController cover;
         [SerializeField] Text bestTimeText;
         [SerializeField] Text currentTimeText;
+        [SerializeField] TextMeshProUGUI gameTime;
 
         [Inject] GameManager gameManager;
 
         void Start()
         {
             OpenMenu();
+        }
+
+        void Update()
+        {
+            gameTime.text = TimeToString(gameManager.CurrentTime);
         }
 
         public void StartGame()
@@ -129,7 +137,7 @@ namespace UI
 
             backgroundUI.SetActive(true);
             gameCompleteUI.SetActive(true);
-            currentTimeText.text = TimeToString(gameManager.CurrentTime);
+            currentTimeText.text = TimeToString(gameManager.GameCompleteTime);
         }
 
         static string TimeToString(float time)
